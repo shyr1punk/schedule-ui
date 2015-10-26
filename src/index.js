@@ -6,6 +6,9 @@ import configureStore from './store/configureStore';
 const target = document.getElementById('root');
 const store  = configureStore(window.__INITIAL_STATE__, __DEBUG__);
 
+import injectTapEventPlugin from 'react-tap-event-plugin';
+injectTapEventPlugin();
+
 const node = (
   <Root store={store}
         debug={__DEBUG__}

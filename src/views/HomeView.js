@@ -1,6 +1,7 @@
 import React                  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect }            from 'react-redux';
+import RaisedButton from 'material-ui/lib/raised-button';
 
 // Normally you'd import your action creators, but I don't want to create
 // a file that you're just going to delete anyways!
@@ -31,10 +32,7 @@ export class HomeView extends React.Component {
       <div className='container text-center'>
         <h1>Welcome to the React Redux Starter Kit</h1>
         <h2>Sample Counter: {this.props.counter}</h2>
-        <button className='btn btn-default'
-                onClick={this.props.actions.increment}>
-          Increment
-        </button>
+        <RaisedButton label='Increment' onClick={this.props.actions.increment}/>
       </div>
     );
   }
