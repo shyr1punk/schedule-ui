@@ -27,12 +27,52 @@ export class HomeView extends React.Component {
     counter  : React.PropTypes.number
   }
 
+  constructor (props) {
+    super(props);
+
+    this.state = {
+      groups: false
+    };
+  }
+
+  componentWillMount() {
+    fetch('http://127.0.0.1:8000/groups').then(
+      (response) => {
+        if (response.status !== 200) {
+          console.log('Looks like there was a problem. Status Code: ' + response.status);
+          return;
+        }
+        // Examine the text in the response
+        response.json().then((data) => {
+          this.setState({
+            groups: data
+          });
+        });
+      }
+    )
+    .catch(function(err) {
+      console.log('Fetch Error :-S', err);
+    });
+  }
+
+  renderMenu() {
+    const groupButtons = this.state.groups.map((group) => {
+      return <RaisedButton label={group.title} onClick={this.props.actions.increment}/>;
+    });
+    return (
+      <div>
+        {groupButtons}
+      </div>
+    );
+  }
+
   render () {
     return (
       <div className='container text-center'>
         <h1>Welcome to the React Redux Starter Kit</h1>
         <h2>Sample Counter: {this.props.counter}</h2>
         <RaisedButton label='Increment' onClick={this.props.actions.increment}/>
+        {this.state.groups && this.renderMenu()}
       </div>
     );
   }
