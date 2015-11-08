@@ -2,9 +2,8 @@ import React                  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect }            from 'react-redux';
 import RaisedButton from 'material-ui/lib/raised-button';
-import Menu from 'material-ui/lib/menus/menu';
-import MenuItem from 'material-ui/lib/menus/menu-item';
 import { fetchGroups } from '../actions';
+import RightMenu from 'components/RightMenu'
 
 // Normally you'd import your action creators, but I don't want to create
 // a file that you're just going to delete anyways!
@@ -41,7 +40,7 @@ export class HomeView extends React.Component {
   componentWillMount() {
     // const { dispatch } = this.props;
     // dispatch(fetchGroups());
-    fetch('http://127.0.0.1:8000/groups').then(
+    fetch('http://127.0.0.1:8000/init').then(
       (response) => {
         if (response.status !== 200) {
           console.log('Looks like there was a problem. Status Code: ' + response.status);
@@ -50,7 +49,7 @@ export class HomeView extends React.Component {
         // Examine the text in the response
         response.json().then((data) => {
           this.setState({
-            groups: data
+            menuData: data
           });
         });
       }
@@ -60,18 +59,9 @@ export class HomeView extends React.Component {
     });
   }
 
-  handleMenuChange(event, value) {
-    console.log(event, value);
-  }
-
   renderMenu() {
-    const groupMenuItem = this.state.groups.map((group, index) => {
-      return <MenuItem key={index} primaryText={group.title}/>;
-    });
     return (
-      <Menu onItemTouchTap={this.handleMenuChange}>
-        {groupMenuItem}
-      </Menu>
+      <RightMenu menuData={this.state.menuData} />
     );
   }
 
@@ -81,7 +71,7 @@ export class HomeView extends React.Component {
         <h1>Welcome to the React Redux Starter Kit</h1>
         <h2>Sample Counter: {this.props.counter}</h2>
         <RaisedButton label='Increment' onClick={this.props.actions.increment}/>
-        {this.state.groups && this.renderMenu()}
+        {this.state.menuData && this.renderMenu()}
       </div>
     );
   }
