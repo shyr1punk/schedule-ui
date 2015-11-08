@@ -2,6 +2,9 @@ import React                  from 'react';
 import { bindActionCreators } from 'redux';
 import { connect }            from 'react-redux';
 import RaisedButton from 'material-ui/lib/raised-button';
+import Menu from 'material-ui/lib/menus/menu';
+import MenuItem from 'material-ui/lib/menus/menu-item';
+import { fetchGroups } from '../actions';
 
 // Normally you'd import your action creators, but I don't want to create
 // a file that you're just going to delete anyways!
@@ -36,6 +39,8 @@ export class HomeView extends React.Component {
   }
 
   componentWillMount() {
+    // const { dispatch } = this.props;
+    // dispatch(fetchGroups());
     fetch('http://127.0.0.1:8000/groups').then(
       (response) => {
         if (response.status !== 200) {
@@ -55,14 +60,18 @@ export class HomeView extends React.Component {
     });
   }
 
+  handleMenuChange(event, value) {
+    console.log(event, value);
+  }
+
   renderMenu() {
-    const groupButtons = this.state.groups.map((group) => {
-      return <RaisedButton label={group.title} onClick={this.props.actions.increment}/>;
+    const groupMenuItem = this.state.groups.map((group, index) => {
+      return <MenuItem key={index} primaryText={group.title}/>;
     });
     return (
-      <div>
-        {groupButtons}
-      </div>
+      <Menu onItemTouchTap={this.handleMenuChange}>
+        {groupMenuItem}
+      </Menu>
     );
   }
 
